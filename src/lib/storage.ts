@@ -1,4 +1,5 @@
 import ePub from 'epubjs';
+import { createId } from './ids';
 
 export type Quote = { id: string; text: string; cfi: string; savedAt: number };
 export type Bookmark = { id: string; cfi: string; savedAt: number; excerpt?: string };
@@ -93,7 +94,7 @@ export async function importBook(file: File): Promise<BookRecord> {
     const metadata = await book.loaded.metadata;
     const cover = await coverAsDataUrl(await book.coverUrl());
     const meta: BookRecord = {
-      id: crypto.randomUUID(),
+      id: createId(),
       filename: file.name,
       title: String(metadata?.title || file.name.replace(/\.epub$/i, '')),
       author: String(metadata?.creator || 'Unknown author'),
