@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { createId } from './lib/ids';
 import Stone from './components/Stone';
 import Library from './components/Library';
 import Reader, { type ReaderSettings, type TextSelection } from './components/Reader';
@@ -71,7 +72,7 @@ export default function App() {
     const cfi = book?.location;
     if (!book || !cfi) { setNotice('Open a page first to bookmark it'); return; }
     const existing = book.bookmarks.find(item => item.cfi === cfi);
-    const mark: Bookmark = existing || { id: crypto.randomUUID(), cfi, savedAt: Date.now() };
+    const mark: Bookmark = existing || { id: createId(), cfi, savedAt: Date.now() };
     if (!existing) changeBook(book.id, { bookmarks: [...book.bookmarks, mark] });
     setLastBookmark(mark); setOverlay('bookmark'); setSelection(null);
   }, [activeId, changeBook]);
@@ -146,13 +147,13 @@ export default function App() {
   }
   function underlineSelected() {
     if (!selection || !activeBook) return;
-    const newQuote: Quote = { id: crypto.randomUUID(), cfi: selection.cfi, text: selection.text, savedAt: Date.now() };
+    const newQuote: Quote = { id: createId(), cfi: selection.cfi, text: selection.text, savedAt: Date.now() };
     changeBook(activeBook.id, { quotes: [...activeBook.quotes, newQuote] });
     setHighlightCfi(selection.cfi); setSelection(null); setNotice('passage saved');
   }
   function shareSelected() {
     if (!selection || !activeBook) return;
-    const quote: Quote = { id: crypto.randomUUID(), text: selection.text, cfi: selection.cfi, savedAt: Date.now() };
+    const quote: Quote = { id: createId(), text: selection.text, cfi: selection.cfi, savedAt: Date.now() };
     openShare({ book: activeBook, quote }, null);
   }
   function returnToBookmark(entry: SavedEntry) {
