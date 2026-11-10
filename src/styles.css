@@ -142,3 +142,5 @@ button:focus-visible, input:focus-visible { outline: 2px solid #f7c2ad; outline-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0ms !important; transition-duration: .01ms !important; }
 }
+
+.reader-loading-stone { width: 122px; margin-bottom: 3px; }
