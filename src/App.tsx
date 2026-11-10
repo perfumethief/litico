@@ -47,6 +47,7 @@ export default function App() {
     return () => { alive = false; window.clearTimeout(timer); };
   }, []);
   useEffect(() => { localStorage.setItem('litico-settings', JSON.stringify(settings)); }, [settings]);
+  useEffect(() => { if (overlay !== 'bookmark') return; const timer = window.setTimeout(() => setOverlay(null), 2400); return () => window.clearTimeout(timer); }, [overlay]);
   useEffect(() => {
     if (!notice) return;
     const timer = window.setTimeout(() => setNotice(''), 3500);
