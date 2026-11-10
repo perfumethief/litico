@@ -187,3 +187,5 @@ button:focus-visible, input:focus-visible { outline: 2px solid #f7c2ad; outline-
   .scribble-outline { height: 78px; }
   .settings-bottom { min-height: 100px; }
 }
+
+.stone-particle { transform-box: fill-box; transform-origin: center; }
