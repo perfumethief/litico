@@ -9,7 +9,7 @@ import { detectGesture, type Gesture, type Point } from './lib/gestures';
 
 type Screen = 'library' | 'reader';
 type Overlay = 'import' | 'settings' | 'saved' | 'bookmark' | 'share' | null;
-const DEFAULT_SETTINGS: ReaderSettings = { font: 'Kazimir', size: 19, spacing: 1.6, background: '#FAE2D6', brightness: 100 };
+const DEFAULT_SETTINGS: ReaderSettings = { font: 'Kazimir', size: 19, spacing: 1.6, background: '#FAE2D6', ink: '#12130F', brightness: 100 };
 function savedSettings(): ReaderSettings {
   try { return { ...DEFAULT_SETTINGS, ...JSON.parse(localStorage.getItem('litico-settings') || '{}') }; }
   catch { return DEFAULT_SETTINGS; }
