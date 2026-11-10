@@ -43,7 +43,7 @@ export default function App() {
       if (last && items.some(book => book.id === last)) setActiveId(last);
       else if (items.length) setActiveId(items[0].id);
     }).catch(error => { if (alive) setNotice('Local library unavailable: ' + (error instanceof Error ? error.message : 'unknown error')); });
-    const timer = window.setTimeout(() => { if (alive) setSplash(false); }, 1900);
+    const timer = window.setTimeout(() => { if (alive) setSplash(false); }, 2300);
     return () => { alive = false; window.clearTimeout(timer); };
   }, []);
   useEffect(() => { localStorage.setItem('litico-settings', JSON.stringify(settings)); }, [settings]);
