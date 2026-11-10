@@ -35,43 +35,60 @@ export function ImportOverlay({ onImport, busy, message, error }: ImportProps) {
   </section>;
 }
 const fontNames: ReaderSettings['font'][] = ['Kazimir','Baskerville','Bodoni','Courier New'];
-const bgColors = [{ c: '#FAE2D6', label: 'peach' },{ c: '#FFF5E6', label: 'ivory' },{ c: '#354D0D', label: 'olive' }];
+const paperScale = ['#FAE2D6','#FFF5E6','#EAE4CF','#D9E7FF','#CFCBD8','#3D5811'];
+const inkScale = ['#12130F','#464B45','#70445C','#B84B83','#F5D9C7','#FFFFFF'];
 type SettingsProps = { settings: ReaderSettings; onChange: (settings: ReaderSettings) => void };
 export function SettingsOverlay({ settings, onChange }: SettingsProps) {
-  return <section className="overlay-screen blue-screen settings-screen" aria-label="Reading settings">
+  const fontIndex = fontNames.indexOf(settings.font);
+  const paperIndex = Math.max(0, paperScale.findIndex(c => c.toLowerCase() === settings.background.toLowerCase()));
+  const inkIndex = Math.max(0, inkScale.findIndex(c => c.toLowerCase() === settings.ink.toLowerCase()));
+  return <section className="overlay-screen blue-screen original-settings" aria-label="Reading settings">
     <h2>settings</h2>
-    <div className="setting-section">
-      <div className="setting-row"><span>font</span><span className="setting-value">{settings.font}</span></div>
-      <div className="type-samples">
-        {fontNames.map(font => <button key={font} type="button" className={`font-choice ${font === settings.font ? 'chosen' : ''}`}
-          onClick={() => onChange({ ...settings, font })}>
-          <span style={{ fontFamily: font === 'Courier New' ? 'Courier New, monospace' : font === 'Bodoni' ? 'Didot, Georgia, serif' : 'Georgia, serif' }}>Aa</span>
-          <small>{font}</small>
-        </button>)}
+    <div className="original-settings-controls">
+      <div className="gradient-colours">
+        <div className="gradient-colour">
+          <label htmlFor="paper-colour">background</label>
+          <input id="paper-colour" className="vertical-gradient paper-gradient" type="range" min="0" max={paperScale.length - 1} step="1" value={paperIndex}
+            onChange={event => onChange({ ...settings, background: paperScale[Number(event.target.value)] })} aria-label="Background colour" />
+        </div>
+        <div className="gradient-colour">
+          <input id="ink-colour" className="vertical-gradient ink-gradient" type="range" min="0" max={inkScale.length - 1} step="1" value={inkIndex}
+            onChange={event => onChange({ ...settings, ink: inkScale[Number(event.target.value)] })} aria-label="Text colour" />
+          <label htmlFor="ink-colour">text</label>
+        </div>
+      </div>
+      <div className="settings-middle">
+        <div className="scribble-setting"><label htmlFor="spacing-stone">spacing</label>
+          <div className="scribble-outline spacing-scribble">
+            <input id="spacing-stone" type="range" min="1.2" max="2.2" step=".1" value={settings.spacing}
+              onChange={event => onChange({ ...settings, spacing: Number(event.target.value) })} aria-label="Text spacing"/>
+            <span>{settings.spacing.toFixed(1)}</span>
+          </div>
+        </div>
+        <div className="font-setting"><span>font</span>
+          <div className="font-switch">
+            <button type="button" aria-label="Previous font" onClick={() => onChange({ ...settings, font: fontNames[(fontIndex + fontNames.length - 1) % fontNames.length] })}>‹</button>
+            <span>{settings.font}</span>
+            <button type="button" aria-label="Next font" onClick={() => onChange({ ...settings, font: fontNames[(fontIndex + 1) % fontNames.length] })}>›</button>
+          </div>
+        </div>
+      </div>
+      <div className="settings-bottom">
+        <div className="size-setting"><span>size</span>
+          <div className="size-stepper"><button type="button" aria-label="Decrease text size" onClick={() => onChange({ ...settings, size: Math.max(13,settings.size - 1) })}>−</button>
+          <span>{settings.size}</span>
+          <button type="button" aria-label="Increase text size" onClick={() => onChange({ ...settings, size: Math.min(29,settings.size + 1) })}>+</button></div>
+        </div>
+        <div className="scribble-setting brightness-setting"><label htmlFor="brightness-stone">brightness</label>
+          <div className="scribble-outline brightness-scribble">
+            <input id="brightness-stone" type="range" min="55" max="115" step="5" value={settings.brightness}
+              onChange={event => onChange({ ...settings, brightness: Number(event.target.value) })} aria-label="Brightness"/>
+            <span>{settings.brightness}%</span>
+          </div>
+        </div>
       </div>
     </div>
-    <div className="setting-section">
-      <label htmlFor="font-size"><span>size</span><b>{settings.size}</b></label>
-      <input id="font-size" type="range" min="13" max="29" step="1" value={settings.size}
-        onChange={event => onChange({ ...settings, size: Number(event.target.value) })}/>
-    </div>
-    <div className="setting-section">
-      <label htmlFor="line-spacing"><span>spacing</span><b>{settings.spacing.toFixed(1)}</b></label>
-      <input id="line-spacing" type="range" min="1.2" max="2.2" step="0.1" value={settings.spacing}
-        onChange={event => onChange({ ...settings, spacing: Number(event.target.value) })}/>
-    </div>
-    <div className="setting-section">
-      <label htmlFor="brightness"><span>brightness</span><b>{settings.brightness}%</b></label>
-      <input id="brightness" type="range" min="55" max="115" step="5" value={settings.brightness}
-        onChange={event => onChange({ ...settings, brightness: Number(event.target.value) })}/>
-    </div>
-    <div className="setting-section">
-      <div className="setting-row"><span>paper</span><span className="setting-value">background</span></div>
-      <div className="paper-options">{bgColors.map(color => <button key={color.c} type="button" title={color.label} aria-label={color.label}
-        aria-pressed={settings.background === color.c} className={`paper-swatch ${settings.background === color.c ? 'chosen' : ''}`}
-        style={{ backgroundColor: color.c }} onClick={() => onChange({ ...settings, background: color.c })}/>)}</div>
-    </div>
-    <p className="gesture-caption">swipe down to resume reading</p>
+    <p className="gesture-caption">swipe down to return to your book</p>
   </section>;
 }
 export type SavedEntry = { book: BookRecord; quote?: Quote; bookmark?: Bookmark };
