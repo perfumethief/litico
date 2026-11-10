@@ -17,5 +17,5 @@ export async function copyQuote(text: string): Promise<void> {
   if (!ok) throw new Error('Copy unavailable in this browser');
 }
 export function shareTelegram(text: string): void {
-  window.open(`https://t.me/share/url?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+  window.open(`https://t.me/share/url?url=&text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
 }
