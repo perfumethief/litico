@@ -150,3 +150,40 @@ button:focus-visible, input:focus-visible { outline: 2px solid #f7c2ad; outline-
 .bookmark-pop-stone { width: 142px; }
 .bookmark-pop-label { position: absolute; left: 76px; top: 60px; white-space: nowrap; color: #f9e1d4; font: italic 12px Georgia, serif; background: #12130fc0; padding: 4px 7px; border-radius: 3px; }
 @keyframes original-bookmark-peek { from { transform: translateY(118px) rotate(-3deg); opacity: .5; } to { transform: translateY(0) rotate(0); opacity: 1; } }
+
+/* Original XD settings choreography: two upright colour gradients and irregular gesture dials. */
+.original-settings h2 { font-family: "Helvetica Neue", Arial, sans-serif; font-size: 44px; letter-spacing: -.055em; font-weight: 400; margin-bottom: 44px; }
+.original-settings-controls { display: flex; flex-direction: column; gap: 34px; padding: 4px 3px 0; font-family: Georgia, "Times New Roman", serif; }
+.gradient-colours { display: flex; justify-content: center; gap: clamp(27px, 9vw, 58px); min-height: 200px; }
+.gradient-colour { display: flex; align-items: center; justify-content: center; gap: 8px; }
+.gradient-colour label { font: normal clamp(20px, 5.5vw, 27px) Georgia, serif; writing-mode: vertical-rl; text-orientation: mixed; }
+.vertical-gradient { -webkit-appearance: none; appearance: none; writing-mode: vertical-lr; direction: rtl; width: 28px; height: 195px; margin: 0; border: 1px solid #12130f; border-radius: 0; padding: 0; }
+.paper-gradient { background: linear-gradient(to bottom, #fb1680 0%, #d18cff 52%, #00b9ef 100%); }
+.ink-gradient { background: linear-gradient(to bottom, #00b3ee 0%, #8f8efb 40%, #fd1384 100%); }
+.vertical-gradient::-webkit-slider-thumb { appearance: none; width: 37px; height: 5px; border: 1px solid #12130f; background: #e9f2ffcf; box-shadow: 0 0 0 1px #ffffff81; cursor: grab; }
+.vertical-gradient::-moz-range-thumb { width: 35px; height: 5px; border-radius: 0; border: 1px solid #12130f; background: #e9f2ffcf; cursor: grab; }
+.settings-middle, .settings-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.scribble-setting { display: flex; align-items: center; gap: 4px; min-width: 0; }
+.scribble-setting label { font: normal clamp(20px, 5.8vw, 28px) Georgia, serif; writing-mode: vertical-rl; transform: rotate(180deg); }
+.scribble-outline { position: relative; width: 105px; height: 105px; flex: 1; border: 1px solid #72858b91; border-radius: 34% 49% 43% 30% / 36% 33% 45% 43%; transform: rotate(-8deg); display: grid; place-items: center; }
+.scribble-outline::before { content: ''; position: absolute; inset: 2px; border: 1px solid #8b9da24f; border-radius: 47% 31% 49% 32% / 37% 49% 33% 45%; transform: rotate(13deg); pointer-events: none; }
+.scribble-outline input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.scribble-outline span { font: italic 13px Georgia, serif; opacity: .55; pointer-events: none; }
+.font-setting { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; }
+.font-setting > span, .size-setting > span { font: normal clamp(23px, 6vw, 32px) Georgia, serif; }
+.font-switch { display: flex; align-items: center; gap: 9px; font: normal 20px Georgia, serif; }
+.font-switch span { min-width: 70px; font: normal clamp(15px, 4vw, 20px) Georgia, serif; }
+.font-switch button, .size-stepper button { border: none; color: inherit; background: transparent; padding: 5px; font: normal 25px Georgia, serif; }
+.settings-bottom { align-items: center; min-height: 122px; }
+.size-setting { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 15px; }
+.size-stepper { display: flex; align-items: center; gap: 12px; font: normal 19px Georgia, serif; }
+.brightness-setting label { transform: rotate(180deg); }
+.brightness-setting .scribble-outline { width: 105px; height: 108px; }
+@media (max-height: 735px) {
+  .original-settings h2 { margin-bottom: 18px; }
+  .original-settings-controls { gap: 18px; }
+  .gradient-colours { min-height: 160px; }
+  .vertical-gradient { height: 156px; }
+  .scribble-outline { height: 78px; }
+  .settings-bottom { min-height: 100px; }
+}
