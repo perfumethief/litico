@@ -9,6 +9,7 @@ export type ReaderSettings = {
   size: number;
   spacing: number;
   background: string;
+  ink: string;
   brightness: number;
 };
 export type TextSelection = { text: string; cfi: string };
@@ -93,7 +94,7 @@ export default function Reader({ book, settings, highlightCfi, onLocation, onSel
         });
         // Apply the reading theme directly inside EPUB iframes.
         rendition.themes.default({
-          'html, body': { background: settings.background + ' !important', color: '#12130f !important' },
+          'html, body': { background: settings.background + ' !important', color: settings.ink + ' !important' },
           body: { padding: '0 !important' }
         });
         rendition.themes.font(fontFamily[settings.font]);
@@ -132,7 +133,7 @@ export default function Reader({ book, settings, highlightCfi, onLocation, onSel
       rendition.themes.fontSize(settings.size + 'px');
       rendition.themes.override('line-height', String(settings.spacing), true);
       rendition.themes.override('background', settings.background, true);
-      rendition.themes.override('color', settings.background === '#354D0D' ? '#FAE2D6' : '#12130F', true);
+      rendition.themes.override('color', settings.ink, true);
     } catch { /* wait for EPUB to finish rendering */ }
   }, [settings, ready]);
   useEffect(() => {
@@ -148,7 +149,7 @@ export default function Reader({ book, settings, highlightCfi, onLocation, onSel
     return () => window.removeEventListener('keydown', key);
   }, []);
 
-  return <section className="reader-page" aria-label={`Reading ${book.title}`} style={{ backgroundColor: settings.background, filter: `brightness(${settings.brightness / 100})` }}>
+  return <section className="reader-page" aria-label={`Reading ${book.title}`} style={{ backgroundColor: settings.background, color: settings.ink, filter: `brightness(${settings.brightness / 100})` }}>
     <div ref={hostRef} className="epub-host" />
     {loading && <div className="reader-loading"><Stone className="reader-loading-stone" animate /><div className="reader-loading-title">{book.title}</div><span>opening your book</span></div>}
     {error && <div className="reader-failed"><p>{error}</p><p>Swipe right to return to the library.</p></div>}
