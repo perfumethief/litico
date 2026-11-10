@@ -144,3 +144,9 @@ button:focus-visible, input:focus-visible { outline: 2px solid #f7c2ad; outline-
 }
 
 .reader-loading-stone { width: 122px; margin-bottom: 3px; }
+
+/* The bookmark is a tiny physical stone peeking up, not a bottom sheet. */
+.bookmark-pop { position: absolute; left: -9px; bottom: -38px; z-index: 9; width: 145px; height: 170px; cursor: pointer; pointer-events: auto; animation: original-bookmark-peek 540ms cubic-bezier(.13,.88,.2,1.06) both; }
+.bookmark-pop-stone { width: 142px; }
+.bookmark-pop-label { position: absolute; left: 76px; top: 60px; white-space: nowrap; color: #f9e1d4; font: italic 12px Georgia, serif; background: #12130fc0; padding: 4px 7px; border-radius: 3px; }
+@keyframes original-bookmark-peek { from { transform: translateY(118px) rotate(-3deg); opacity: .5; } to { transform: translateY(0) rotate(0); opacity: 1; } }
