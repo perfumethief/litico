@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import ePub from 'epubjs';
+import Stone from './Stone';
 import { bookData, type BookRecord } from '../lib/storage';
 import { detectGesture, type Gesture, type Point } from '../lib/gestures';
 
@@ -149,7 +150,7 @@ export default function Reader({ book, settings, highlightCfi, onLocation, onSel
 
   return <section className="reader-page" aria-label={`Reading ${book.title}`} style={{ backgroundColor: settings.background, filter: `brightness(${settings.brightness / 100})` }}>
     <div ref={hostRef} className="epub-host" />
-    {loading && <div className="reader-loading"><div className="reader-loading-title">{book.title}</div><span>opening your book</span></div>}
+    {loading && <div className="reader-loading"><Stone className="reader-loading-stone" animate /><div className="reader-loading-title">{book.title}</div><span>opening your book</span></div>}
     {error && <div className="reader-failed"><p>{error}</p><p>Swipe right to return to the library.</p></div>}
     {ready && <><span className="reader-page-number">{pageLabel}</span><span className="bookmark-edge" aria-hidden="true"></span></>}
     {ready && hintVisible && <div className="reader-first-hint" onClick={() => setHintVisible(false)}>tap the edges to turn pages · swipe to navigate</div>}
