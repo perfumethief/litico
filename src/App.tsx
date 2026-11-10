@@ -136,7 +136,7 @@ export default function App() {
     setBusy(false); setImportMessage('');
   }
 
-  const entries: SavedEntry[] = books.flatMap(book => [
+  const entries: SavedEntry[] = books.flatMap<SavedEntry>(book => [
     ...book.quotes.map(quote => ({ book, quote })),
     ...book.bookmarks.map(bookmark => ({ book, bookmark }))
   ]).sort((a,b) => (b.quote?.savedAt || b.bookmark?.savedAt || 0) - (a.quote?.savedAt || a.bookmark?.savedAt || 0));
