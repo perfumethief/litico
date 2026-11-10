@@ -3,7 +3,7 @@ import type { CSSProperties } from 'react';
 
 // A vector rendering of Litico's irregular 2023 stone silhouette.
 // The original granular motif is built out of tiny deterministic particles.
-const SHAPE = 'M 44 94 C 61 75 80 61 116 50 C 153 37 187 24 210 27 C 226 28 231 41 234 60 C 236 77 237 85 246 104 C 253 123 264 146 265 167 L 268 244 C 263 264 228 288 203 301 C 186 310 142 310 112 311 L 48 311 C 25 310 21 296 21 273 L 24 135 C 24 117 28 109 44 94 Z';
+const SHAPE = 'M 213 18 C 192 16 161 21 118 31 C 86 40 45 70 23 92 L 17 126 L 15 310 C 15 318 25 319 43 319 L 205 318 C 226 317 253 290 274 264 L 273 153 C 271 134 250 106 239 86 C 229 65 232 47 228 36 C 226 24 221 19 213 18 Z';
 function randomPoints() {
   let seed = 2023;
   const rand = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
