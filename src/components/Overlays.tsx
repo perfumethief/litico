@@ -120,11 +120,8 @@ export function ShareOverlay({ entry, onCopy, onTelegram, onBack }: ShareProps) 
 }
 type BookmarkProps = { bookmark?: Bookmark; onClose: () => void };
 export function BookmarkOverlay({ bookmark, onClose }: BookmarkProps) {
-  return <section className="bookmark-peek" aria-label="Bookmark saved" onClick={onClose}>
-    <span className="peek-handle"/>
-    <Stone className="peek-stone" animate />
-    <p>bookmark saved</p>
-    <small>{bookmark ? 'a place to return to' : 'bookmark unavailable while loading'}</small>
-    <span className="peek-help">swipe down to close</span>
+  return <section className="bookmark-pop" aria-label="Bookmark saved" role="status" onClick={onClose}>
+    <Stone className="bookmark-pop-stone" animate />
+    <span className="bookmark-pop-label">{bookmark ? 'place marked' : 'page not ready'}</span>
   </section>;
 }
