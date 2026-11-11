@@ -33,6 +33,7 @@ export default function App() {
   const [shareEntry, setShareEntry] = useState<SavedEntry | null>(null);
   const [shareBack, setShareBack] = useState<Overlay>('saved');
   const pointerStart = useRef<Point | null>(null);
+  const touchStart = useRef<Point | null>(null);
   const activeBook = books.find(book => book.id === activeId);
 
   useEffect(() => {
@@ -95,19 +96,40 @@ export default function App() {
       // Reader settings are opened by an intentional center tap only.
     }
   }, [splash, busy, overlay, screen, activeId, shareBack, selection, addBookmark]);
+  const sendDeviceGesture = (start: Point, end: Point, bounds: DOMRect) => {
+    handleGesture(detectGesture(start, end), {
+      x: (start.x - bounds.left) / bounds.width,
+      y: (start.y - bounds.top) / bounds.height
+    });
+  };
   const onPointerDown = (event: React.PointerEvent) => {
-    if ((event.target as HTMLElement)?.closest('input, button, textarea, select')) { pointerStart.current = null; return; }
+    // Mouse/pen drags use pointer events. Touch uses touchend below because
+    // browsers may cancel pointer events when they start scrolling an overlay.
+    if (event.pointerType === 'touch') return;
+    if ((event.target as HTMLElement)?.closest('input, button, textarea, select')) {
+      pointerStart.current = null; return;
+    }
     pointerStart.current = { x: event.clientX, y: event.clientY };
   };
   const onPointerUp = (event: React.PointerEvent) => {
+    if (event.pointerType === 'touch') return;
     const start = pointerStart.current;
     pointerStart.current = null;
-    if (start) {
-      const bounds = event.currentTarget.getBoundingClientRect();
-      handleGesture(
-        detectGesture(start, { x: event.clientX, y: event.clientY }),
-        { x: (start.x - bounds.left) / bounds.width, y: (start.y - bounds.top) / bounds.height }
-      );
+    if (start) sendDeviceGesture(start, { x: event.clientX, y: event.clientY }, event.currentTarget.getBoundingClientRect());
+  };
+  const onTouchStart = (event: React.TouchEvent) => {
+    if (event.touches.length !== 1 || (event.target as HTMLElement)?.closest('input, button, textarea, select')) {
+      touchStart.current = null; return;
+    }
+    const touch = event.touches[0];
+    touchStart.current = { x: touch.clientX, y: touch.clientY };
+  };
+  const onTouchEnd = (event: React.TouchEvent) => {
+    const start = touchStart.current;
+    touchStart.current = null;
+    const touch = event.changedTouches[0];
+    if (start && touch) {
+      sendDeviceGesture(start, { x: touch.clientX, y: touch.clientY }, event.currentTarget.getBoundingClientRect());
     }
   };
   useEffect(() => {
@@ -176,7 +198,7 @@ export default function App() {
   }
 
   return <div className="desktop-surround">
-    <main className="litico-device" onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerCancel={() => { pointerStart.current = null; }}>
+    <main className="litico-device" onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerCancel={() => { pointerStart.current = null; }} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} onTouchCancel={() => { touchStart.current = null; }}>
       {splash ? <section className="splash-screen" aria-label="Litico loading"><Stone animate label/><span className="splash-caption">a quiet space to read</span></section> :
         <>
           <div className={`screen-base ${screen === 'library' ? 'visible' : 'behind'}`}>
