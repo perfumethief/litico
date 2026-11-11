@@ -90,8 +90,9 @@ export default function App() {
     } else if (screen === 'reader') {
       if (gesture === 'right') { setScreen('library'); setSelection(null); }
       if (gesture === 'left') { setOverlay('saved'); setSelection(null); }
-      if (gesture === 'up' && start.x < window.innerWidth * 0.4 && start.y > window.innerHeight * 0.5) addBookmark();
-      if (gesture === 'down' && !selection) setOverlay('settings');
+      // Gesture coordinates are normalized to the device rather than the desktop browser.
+      if (gesture === 'up' && start.x < 0.36 && start.y > 0.55) addBookmark();
+      // Reader settings are opened by an intentional center tap only.
     }
   }, [splash, busy, overlay, screen, activeId, shareBack, selection, addBookmark]);
   const onPointerDown = (event: React.PointerEvent) => {
@@ -101,7 +102,13 @@ export default function App() {
   const onPointerUp = (event: React.PointerEvent) => {
     const start = pointerStart.current;
     pointerStart.current = null;
-    if (start) handleGesture(detectGesture(start, { x: event.clientX, y: event.clientY }), start);
+    if (start) {
+      const bounds = event.currentTarget.getBoundingClientRect();
+      handleGesture(
+        detectGesture(start, { x: event.clientX, y: event.clientY }),
+        { x: (start.x - bounds.left) / bounds.width, y: (start.y - bounds.top) / bounds.height }
+      );
+    }
   };
   useEffect(() => {
     const key = (event: KeyboardEvent) => {
